@@ -4,11 +4,10 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+//import FormControlLabel from '@material-ui/core/FormControlLabel';
+//import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import hp from '../images/hp_img.png'
 import Alert from '@material-ui/lab/Alert';
   
 const useStyles = makeStyles((theme) => ({
@@ -83,9 +82,9 @@ function SignIn() {
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className={classes.paper}>
-                <Avatar src={hp} />
+                <Avatar  />
                 <Typography component="h1" variant="h5">
-                  MDT-Automation
+                  Universal Tracker
                 </Typography>
                 {byPass ?          // you must provide email and password message state is true
                 <div className={classes.alert}>
@@ -122,10 +121,6 @@ function SignIn() {
                   />
                   {passwordError ? <span style={{color:'red'}}>Password is required</span>:null}
                   <br />
-                  <FormControlLabel
-                    control={<Checkbox value="remember" color="primary" />}
-                    label="Remember me"
-                  />
                     <Button
                       type="submit"
                       fullWidth
