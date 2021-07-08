@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import MDTApp from './app';
+import App from './app';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <MDTApp />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -16,6 +16,11 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { LeaveTracker, ExpenseTracker } from '../components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCashRegister,faLaptopHouse, faTachometerAlt } from '@fortawesome/free-solid-svg-icons';
+import Badge from '@material-ui/core/Badge';
+import Avatar from '@material-ui/core/Avatar';
+import { withStyles } from '@material-ui/core/styles';
 
 const drawerWidth = 240;
 
@@ -76,12 +81,43 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const StyledBadge = withStyles((theme) => ({
+  badge: {
+    backgroundColor: '#44b700',
+    color: '#44b700',
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    '&::after': {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      borderRadius: '50%',
+      animation: '$ripple 1.2s infinite ease-in-out',
+      border: '1px solid currentColor',
+      content: '""',
+    },
+  },
+  '@keyframes ripple': {
+    '0%': {
+      transform: 'scale(.8)',
+      opacity: 1,
+    },
+    '100%': {
+      transform: 'scale(2.4)',
+      opacity: 0,
+    },
+  },
+}))(Badge);
+
 export default function PersistentDrawerLeft() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [leave, setLeaveTracker] = React.useState(false);
   const [expense, setExpenseTracker] = React.useState(false);
+  const [dashboard, setDashboard] = React.useState(true);
+  const selected = true
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -91,14 +127,22 @@ export default function PersistentDrawerLeft() {
         setOpen(false);
     };
 
+    const activeDashboard = () =>{
+      setLeaveTracker(false);
+      setExpenseTracker(false);
+      setDashboard(true);
+    }
+
     const activeLeave = () => {
         setLeaveTracker(true);
         setExpenseTracker(false);
+        setDashboard(false);
     }
 
     const activeExpense = () => {
         setExpenseTracker(true);
         setLeaveTracker(false);
+        setDashboard(false);
     }
 
   return (
@@ -135,20 +179,34 @@ export default function PersistentDrawerLeft() {
         }}
       >
         <div className={classes.drawerHeader}>
+          <StyledBadge
+            overlap="circle"
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            variant="dot"
+          >
+            <Avatar alt="Remy Sharp" src="" />
+          </StyledBadge>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </div>
         <Divider />
         <List>
-            <ListItem button>
-                <ListItemIcon></ListItemIcon>
-                <ListItemText onClick={activeLeave}>LeaveTracker</ListItemText>
-            </ListItem>
-            <ListItem button>
-                <ListItemIcon></ListItemIcon>
-                <ListItemText onClick={activeExpense}>ExpenseTracker</ListItemText>
-            </ListItem>
+          <ListItem button selected = {leave || expense ? null : selected}>
+            <ListItemIcon><FontAwesomeIcon icon={faTachometerAlt} style={{color:"#3f51b5"}}/></ListItemIcon>
+            <ListItemText onClick={activeDashboard}>Dashboard</ListItemText>
+          </ListItem>
+          <ListItem button selected = {dashboard || expense ? null : selected}>
+            <ListItemIcon><FontAwesomeIcon icon={faLaptopHouse} style={{color:"#3f51b5"}}/></ListItemIcon>
+            <ListItemText onClick={activeLeave}>LeaveTracker</ListItemText>
+          </ListItem>
+          <ListItem button selected = {leave || dashboard ? null : selected}>
+            <ListItemIcon><FontAwesomeIcon icon={faCashRegister} style={{color:"#3f51b5"}}/></ListItemIcon>
+            <ListItemText onClick={activeExpense}>ExpenseTracker</ListItemText>
+          </ListItem>
         </List>
         <Divider />
       </Drawer>
@@ -158,6 +216,7 @@ export default function PersistentDrawerLeft() {
         })}
       >
         <div className={classes.drawerHeader} />
+        {dashboard ? <List /> : null }
         {leave ? <LeaveTracker /> : null }
         {expense ? <ExpenseTracker /> : null }
       </main>
